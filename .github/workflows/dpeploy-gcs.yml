@@ -1,0 +1,23 @@
+name: 'Gcs Deployment'
+
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: google-github-actions/setup-gcloud@v1
+        with:
+          service_account_email: ${{ secrets.GCP_SA_EMAIL }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: jomcy.devopscloud.website
+
+      - name: Deploy via GCS
+
+        run: gsutil cp -r * gs://jomcy.devopscloud.website/
